@@ -1,5 +1,5 @@
 # Verbose JSON Parser
-VJP is a verbose JSON parser and generator written in C# 2.0 which heavily relies on type system.
+VJP is a JSON parser and generator which heavily relies on type system.
 
 ## Why?
 Unity has very bad support for JSON and I have to use Unity, so I decided to make my life a little bit less miserable by creating my own parser.
