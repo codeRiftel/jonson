@@ -59,7 +59,7 @@ if (typeRes.IsErr()) {
     }
 }
 ```
-To generate JSON you need to fiil **JSONType**
+To generate JSON you need to fill **JSONType**
 ```csharp
 Dictionary<string, JSONType> root = new Dictionary<string, JSONType>();
 root["foo"] = JSONType.Make("bar");
