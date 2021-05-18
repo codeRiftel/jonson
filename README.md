@@ -46,12 +46,12 @@ if (typeRes.IsErr()) {
                     JSONType element = arr[i];
                     if (element.Str.IsSome()) {
                         // element.Str.Peel() == "bar"
-                    } else if (arr[i].Num.IsSome()) {
+                    } else if (element.Num.IsSome()) {
                         // element.Num.Peel() == -42
-                    } else if (arr[i].Bool.IsSome()) {
+                    } else if (element.Bool.IsSome()) {
                         // element.Bool.Peel() == true
-                    } else if (arr[i].Null.IsSome()) {
-                        // element.Null.Peel() == JSONNull
+                    } else if (element.Null.IsSome()) {
+                        // element is JSONNull
                     }
                 }
             }
