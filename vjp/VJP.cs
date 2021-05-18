@@ -313,8 +313,15 @@ namespace vjp {
 
             pos += parseVal.advance;
 
-            string key = data.Substring(lexKey.token.start + 1, lexKey.token.length - 2);
-            res.key = key;
+            int keyStart = lexKey.token.start + 1;
+            int keyLength = lexKey.token.length - 2;
+
+            Result<string, JSONErrType> keyRes = Unescape(data, keyStart, keyLength);
+            if (keyRes.IsErr()) {
+                return Result<KeyVal, JSONError>.Err(JSONError.Make(keyRes.AsErr(), pos));
+            }
+
+            res.key = keyRes.AsOk();
             res.value = parseVal.type;
 
             res.advance = pos - start;
