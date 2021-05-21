@@ -192,7 +192,7 @@ namespace vjp {
                 Escape(type.Str.Peel(), builder);
                 builder.Append('"');
             } else if (type.Num.IsSome()) {
-                builder.Append(type.Num.Peel());
+                builder.Append(type.Num.Peel().ToString(CultureInfo.InvariantCulture));
             } else if (type.Bool.IsSome()) {
                 bool value = type.Bool.Peel();
                 if (value) {
@@ -417,7 +417,7 @@ namespace vjp {
                     NumberStyles style = NumberStyles.AllowLeadingSign;
                     style |= NumberStyles.AllowDecimalPoint;
                     style |= NumberStyles.AllowExponent;
-                    if (!double.TryParse(numStr, style, null, out num)) {
+                    if (!double.TryParse(numStr, style, CultureInfo.InvariantCulture, out num)) {
                         JSONError numErr = JSONError.Make(JSONErrType.IncorrectNum, pos);
                         return Result<Parsed, JSONError>.Err(numErr);
                     }
