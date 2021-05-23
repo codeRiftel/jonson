@@ -6,7 +6,7 @@ Unity has very bad support for JSON and I have to use Unity, so I decided to mak
 
 ## Features
 * uses C# 2.0
-* codebase is less than 800 SLOC
+* codebase is about 800 SLOC
 * no OOP
 * no exceptions
 * heavy usage of type system
@@ -47,11 +47,11 @@ if (typeRes.IsErr()) {
                     if (element.Str.IsSome()) {
                         // element.Str.Peel() == "bar"
                     } else if (element.Num.IsSome()) {
-                        // element.Num.Peel() == -42
+                        // element.Num.Peel() == "-42"
                     } else if (element.Bool.IsSome()) {
                         // element.Bool.Peel() == true
                     } else if (element.Null.IsSome()) {
-                        // element is JSONNull
+                        // this array element is null
                     }
                 }
             }
