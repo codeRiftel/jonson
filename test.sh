@@ -19,7 +19,7 @@ for test in $(ls -rc tests); do
             echo "FAILED"
         fi
     else
-        if [ $result == 'y' ] || [ $result == 'i']; then
+        if [ $result == 'y' ] || [ $result == 'i' ]; then
             echo "PASSED"
         else
             echo "FAILED"
