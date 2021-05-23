@@ -7,7 +7,7 @@ using System.Globalization;
 namespace vjp {
     public class JSONType {
         public Option<string> Str;
-        public Option<double> Num;
+        public Option<string> Num;
         public Option<bool> Bool;
         public Option<Dictionary<string, JSONType>> Obj;
         public Option<List<JSONType>> Arr;
@@ -19,9 +19,9 @@ namespace vjp {
             return type;
         }
 
-        public static JSONType Make(double num) {
+        public static JSONType Make<T>(T num) {
             JSONType type = new JSONType();
-            type.Num = Option<double>.Some(num);
+            type.Num = Option<string>.Some(num.ToString());
             return type;
         }
 
@@ -423,16 +423,7 @@ namespace vjp {
             Token token = lexVal.token;
             switch (token.type) {
                 case TokenType.Number:
-                    string numStr = data.Substring(token.start, token.length);
-                    double num;
-                    NumberStyles style = NumberStyles.AllowLeadingSign;
-                    style |= NumberStyles.AllowDecimalPoint;
-                    style |= NumberStyles.AllowExponent;
-                    if (!double.TryParse(numStr, style, CultureInfo.InvariantCulture, out num)) {
-                        JSONError numErr = JSONError.Make(JSONErrType.IncorrectNum, pos);
-                        return Result<Parsed, JSONError>.Err(numErr);
-                    }
-                    valType.Num = Option<double>.Some(num);
+                    valType.Num = Option<string>.Some(data.Substring(token.start, token.length));
                     pos += lexVal.advance;
                     break;
                 case TokenType.String:
