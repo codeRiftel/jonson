@@ -54,6 +54,7 @@ namespace vjp {
 
     public enum JSONErrType {
         UnknownToken,
+        NaN,
         HangingStr,
         HangingNum,
         HangingHex,
@@ -119,6 +120,16 @@ namespace vjp {
         public int advance;
         public string key;
         public JSONType value;
+    }
+
+    enum NumState {
+        IntMinus,
+        Int,
+        DecimalPoint,
+        Frac,
+        E,
+        ExpSign,
+        Exp
     }
 
     public static class VJP {
@@ -567,19 +578,108 @@ namespace vjp {
                     case '7':
                     case '8':
                     case '9':
+                        NumState numState = NumState.IntMinus;
+                        if (data[pos] != '-') {
+                            numState = NumState.Int;
+                        }
+
                         first = pos;
                         pos++;
+
+                        JSONError nanErr = JSONError.Make(JSONErrType.NaN, pos);
+
                         while (pos < data.Length) {
+                            NumState next = numState;
+
                             bool isDigit = data[pos] >= '0' && data[pos] <= '9';
                             bool isPoint = data[pos] == '.';
                             bool isExp = data[pos] == 'e' || data[pos] == 'E';
                             bool isSign = data[pos] == '-' || data[pos] == '+';
+
                             if (!(isDigit || isPoint || isExp || isSign)) {
+                                if (numState == NumState.IntMinus) {
+                                    return Result<Lexed, JSONError>.Err(nanErr);
+                                }
+
+                                if (numState == NumState.DecimalPoint) {
+                                    return Result<Lexed, JSONError>.Err(nanErr);
+                                }
+
+                                if (numState == NumState.E) {
+                                    return Result<Lexed, JSONError>.Err(nanErr);
+                                }
+
+                                if (numState == NumState.ExpSign) {
+                                    return Result<Lexed, JSONError>.Err(nanErr);
+                                }
+
                                 token.type = TokenType.Number;
                                 token.start = first;
                                 token.length = pos - first;
                                 break;
                             }
+
+                            switch (numState) {
+                                case NumState.IntMinus:
+                                    if (isDigit) {
+                                        next = NumState.Int;
+                                    } else {
+                                        return Result<Lexed, JSONError>.Err(nanErr);
+                                    }
+                                    break;
+                                case NumState.Int:
+                                    if (isDigit) {
+                                        next = NumState.Int;
+                                    } else if (isPoint) {
+                                        next = NumState.DecimalPoint;
+                                    } else if (isExp) {
+                                        next = NumState.E;
+                                    } else {
+                                        return Result<Lexed, JSONError>.Err(nanErr);
+                                    }
+                                    break;
+                                case NumState.DecimalPoint:
+                                    if (isDigit) {
+                                        next = NumState.Frac;
+                                    } else {
+                                        return Result<Lexed, JSONError>.Err(nanErr);
+                                    }
+                                    break;
+                                case NumState.Frac:
+                                    if (isDigit) {
+                                        next = NumState.Frac;
+                                    } else if (isExp) {
+                                        next = NumState.E;
+                                    } else {
+                                        return Result<Lexed, JSONError>.Err(nanErr);
+                                    }
+                                    break;
+                                case NumState.E:
+                                    if (isSign) {
+                                        next = NumState.ExpSign;
+                                    } else if (isDigit) {
+                                        next = NumState.Exp;
+                                    } else {
+                                        return Result<Lexed, JSONError>.Err(nanErr);
+                                    }
+                                    break;
+                                case NumState.ExpSign:
+                                    if (isDigit) {
+                                        next = NumState.Exp;
+                                    } else {
+                                        return Result<Lexed, JSONError>.Err(nanErr);
+                                    }
+                                    break;
+                                case NumState.Exp:
+                                    if (isDigit) {
+                                        next = NumState.Exp;
+                                    } else {
+                                        return Result<Lexed, JSONError>.Err(nanErr);
+                                    }
+                                    break;
+                            }
+
+                            numState = next;
 
                             pos++;
                             if (pos == data.Length) {
