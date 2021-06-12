@@ -1,6 +1,6 @@
 # Verbose JSON Parser
 VJP is a JSON parser and generator which heavily relies on type system.
-**NOTE:** this package depends on [Option](https://github.com/codeRiftel/vjp)
+**NOTE:** this package depends on [Option](https://github.com/codeRiftel/option).
 
 ## Why?
 Unity has very bad support for JSON and I have to use Unity, so I decided to make my life a little bit less miserable by creating my own parser.
