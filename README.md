@@ -1,5 +1,6 @@
 # Verbose JSON Parser
 VJP is a JSON parser and generator which heavily relies on type system.
+**NOTE:** this package depends on [Option](https://github.com/codeRiftel/vjp)
 
 ## Why?
 Unity has very bad support for JSON and I have to use Unity, so I decided to make my life a little bit less miserable by creating my own parser.
@@ -12,19 +13,14 @@ Unity has very bad support for JSON and I have to use Unity, so I decided to mak
 * heavy usage of type system
 
 ## Usage
-First of all, drop **vjp** directory into your project. If it's a Unity project, then you probably want to put it in *Assets/Scripts*.
-
-As stated earlier, this parser makes heavy usage of type system. In particular, it is based on *vjp/Option.cs* structure, so I recommend you to read it first. After that, you should read *vjp/Result.cs* and **JSONType** which is located in *vjp/VJP.cs*.
-
 Suppose you have this JSON in a **string** named **input**
 ```javascript
 {
-    "foo": [
-        "bar",
-        -42,
-        true,
-        null
-    ]
+    "name": "foo",
+    "age": 42,
+    "dumb": true,
+    "credentials": null,
+    "repos": ["bar1", "bar2"]
 }
 ```
 Let's parse it.
@@ -36,24 +32,51 @@ if (typeRes.IsErr()) {
     // do something about this error
 } else {
     JSONType type = typeRes.AsOk();
+    // we know that root type in this case is an object, so we check for it
     if (type.Obj.IsSome()) {
+        // object is a Dictionary, you should be familiar with it
         Dictionary<string, JSONType> obj = type.Obj.Peel();
-        if (obj.ContainsKey("foo")) {
-            JSONType foo = obj["foo"];
-            if (foo.Arr.IsSome()) {
-                List<JSONType> arr = foo.Arr.Peel();
-                for (int i = 0; i < arr.Count; i++) {
-                    JSONType element = arr[i];
-                    if (element.Str.IsSome()) {
-                        // element.Str.Peel() == "bar"
-                    } else if (element.Num.IsSome()) {
-                        // element.Num.Peel() == "-42"
-                    } else if (element.Bool.IsSome()) {
-                        // element.Bool.Peel() == true
-                    } else if (element.Null.IsSome()) {
-                        // this array element is null
-                    }
-                }
+        // does it contain "name" field?
+        if (obj.ContainsKey("name")) {
+            JSONType nameType = obj["name"];
+            // we know that name must be string, so we check for it
+            if (nameType.Str.IsSome()) {
+                // finally we've got the name!
+                string name = nameType.Str.Peel();
+            }
+        }
+
+        if (obj.ContainsKey("age")) {
+            JSONType ageType = obj["age"];
+            if (ageType.Num.IsSome()) {
+                // note that num is stored as a string
+                // the reason for that is I don't know what you need:
+                // is it float? is it double? is it int? parse it yourself :)
+                // though I gotta say that parser ensures correctness of this
+                // string
+                string age = ageType.Num.Peel();
+            }
+        }
+
+        if (obj.ContainsKey("dumb")) {
+            JSONType dumbType = obj["dumb"];
+            if (dumbType.Bool.IsSome()) {
+                bool dumb = dumbType.Bool.Peel();
+            }
+        }
+
+        if (obj.ContainsKey("credentials")) {
+            JSONType credType = obj["credentials"];
+            if (credType.Null.IsSome()) {
+                // no creds
+            }
+        }
+
+        if (obj.ContainsKey("repos")) {
+            JSONType reposType = obj["repos"];
+            if (reposType.Arr.IsSome()) {
+                // so array is just a List
+                List<JSONType> repos = reposType.Arr.Peel();
             }
         }
     }
