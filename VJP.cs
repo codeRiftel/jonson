@@ -20,12 +20,6 @@ namespace vjp {
             return type;
         }
 
-        public static JSONType Make<T>(T num) {
-            JSONType type = new JSONType();
-            type.Num = Option<string>.Some(num.ToString());
-            return type;
-        }
-
         public static JSONType Make(bool b) {
             JSONType type = new JSONType();
             type.Bool = Option<bool>.Some(b);
