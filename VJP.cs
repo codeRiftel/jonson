@@ -15,6 +15,10 @@ namespace vjp {
         public Option<JSONNull> Null;
 
         public static JSONType Make(string str) {
+            if (str == null) {
+                return JSONType.Make();
+            }
+
             JSONType type = new JSONType();
             type.Str = Option<string>.Some(str);
             return type;
@@ -27,12 +31,20 @@ namespace vjp {
         }
 
         public static JSONType Make(Dictionary<string, JSONType> obj) {
+            if (obj == null) {
+                return JSONType.Make();
+            }
+
             JSONType type = new JSONType();
             type.Obj = Option<Dictionary<string, JSONType>>.Some(obj);
             return type;
         }
 
         public static JSONType Make(List<JSONType> arr) {
+            if (arr == null) {
+                return JSONType.Make();
+            }
+
             JSONType type = new JSONType();
             type.Arr = Option<List<JSONType>>.Some(arr);
             return type;
