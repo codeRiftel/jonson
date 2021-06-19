@@ -3,7 +3,8 @@ VJP is a JSON parser and generator which heavily relies on type system.
 **NOTE:** this package depends on [Option](https://github.com/codeRiftel/option).  
 
 ## Less verbose option
-If you're willing to sacrifice some speed you can check out [vjp-reflect](https://github.com/codeRiftel/vjp-reflect). It uses reflection to convert from object to JSONType and vice versa.
+If you're willing to sacrifice some speed you can check out [vjp-reflect](https://github.com/codeRiftel/vjp-reflect). It uses reflection to convert from object to JSONType and vice versa.  
+Don't want to sacrifice speed? Check out [meta-vjp](https://github.com/codeRiftel/meta-vjp) which generates C# code for your lazy ass.
 
 ## Why?
 Unity has very bad support for JSON and I have to use Unity, so I decided to make my life a little bit less miserable by creating my own parser.
