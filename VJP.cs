@@ -168,42 +168,104 @@ namespace vjp {
 
         public static string Generate(JSONType type) {
             StringBuilder builder = new StringBuilder();
-            GenerateType(type, builder);
+            GenerateType(type, builder, false, 0);
             return builder.ToString();
         }
 
-        private static void GenerateType(JSONType type, StringBuilder builder) {
+        public static string GeneratePretty(JSONType type) {
+            StringBuilder builder = new StringBuilder();
+            GenerateType(type, builder, true, 0);
+            return builder.ToString();
+        }
+
+        private static void AddIndent(StringBuilder builder, int count) {
+            for (int i = 0; i < 4 * count; i++) {
+                builder.Append(' ');
+            }
+        }
+
+        private static void GenerateType(JSONType type, StringBuilder builder, bool p, int d) {
             if (type.Obj.IsSome()) {
                 builder.Append('{');
+                d++;
+
                 Dictionary<string, JSONType> obj = type.Obj.Peel();
+
+                if (p) {
+                    if (obj.Count > 0) {
+                        builder.Append('\n');
+                    }
+                    AddIndent(builder, d);
+                }
+
                 int i = 0;
                 foreach (KeyValuePair<string, JSONType> pair in obj) {
                     builder.Append('"');
                     builder.Append(pair.Key);
                     builder.Append('"');
                     builder.Append(':');
-                    GenerateType(pair.Value, builder);
+
+                    if (p) {
+                        builder.Append(' ');
+                    }
+
+                    GenerateType(pair.Value, builder, p, d);
 
                     if (i < obj.Count - 1) {
                         builder.Append(',');
+
+                        if (p) {
+                            builder.Append('\n');
+                            AddIndent(builder, d);
+                        }
                     }
 
                     i++;
                 }
+
+                d--;
+                if (p) {
+                    builder.Append('\n');
+                    AddIndent(builder, d);
+                }
+
                 builder.Append('}');
             } else if (type.Arr.IsSome()) {
                 builder.Append('[');
+                d++;
+
                 List<JSONType> arr = type.Arr.Peel();
+
+                if (p) {
+                    if (arr.Count > 0) {
+                        builder.Append('\n');
+                    }
+
+                    AddIndent(builder, d);
+                }
+
                 int i = 0;
                 foreach (JSONType element in arr) {
-                    GenerateType(element, builder);
+                    GenerateType(element, builder, p, d);
 
                     if (i < arr.Count - 1) {
                         builder.Append(',');
+
+                        if (p) {
+                            builder.Append('\n');
+                            AddIndent(builder, d);
+                        }
                     }
 
                     i++;
                 }
+
+                d--;
+                if (p) {
+                    builder.Append('\n');
+                    AddIndent(builder, d);
+                }
+
                 builder.Append(']');
             } else if (type.Str.IsSome()) {
                 builder.Append('"');
