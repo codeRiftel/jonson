@@ -1,2 +1,6 @@
 option/
 *.exe
+main.cs
+tests/
+test.sh
+Makefile
