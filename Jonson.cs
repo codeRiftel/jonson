@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using option;
 
-namespace vjp {
+namespace jonson {
     public class JSONType {
         public Option<string> Str;
         public Option<string> Num;
@@ -139,7 +139,7 @@ namespace vjp {
         Exp
     }
 
-    public static class VJP {
+    public static class Jonson {
         private static string TRUE = "true";
         private static string FALSE = "false";
         private static string NULL = "null";

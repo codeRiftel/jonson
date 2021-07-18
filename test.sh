@@ -11,7 +11,7 @@ for test in $(ls -rc tests); do
     else
         echo "too long"
     fi
-    mono vjp.exe < tests/$test
+    mono jonson.exe < tests/$test
     if [ $? -ne 0 ]; then
         if [ $result == 'n' ] || [ $result == 'i' ]; then
             echo "PASSED"

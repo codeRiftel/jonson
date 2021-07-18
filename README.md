@@ -1,5 +1,5 @@
-# Verbose JSON Parser
-VJP is a JSON parser and generator which heavily relies on type system.  
+# jonson
+jonson is a JSON parser and generator which heavily relies on type system.  
 **NOTE:** this package depends on [Option](https://github.com/codeRiftel/option).  
 
 ## Less verbose option
@@ -7,9 +7,10 @@ If you're willing to sacrifice some speed you can check out [vjp-reflect](https:
 Don't want to sacrifice speed? Check out [meta-vjp](https://github.com/codeRiftel/meta-vjp) which generates C# code for your lazy ass.
 
 ## Why?
-Unity has very bad support for JSON and I have to use Unity, so I decided to make my life a little bit less miserable by creating my own parser.
+jonson allows sort of dynamic parsing, when JsonUtility (from Unity) does not. Also it's written in pure C# 2.0, so it's very compatible and won't throw errors in AOT builds (compared to JSON.NET for example) while still remaining very simple and small.
 
 ## Features
+* verbose
 * uses C# 2.0
 * codebase is about 800 SLOC
 * no OOP
@@ -30,7 +31,7 @@ Suppose you have this JSON in a **string** named **input**
 Let's parse it.
 ```csharp
 // second parameter represents depth limit
-Result<JSONType, JSONError> typeRes = VJP.Parse(input, 1024);
+Result<JSONType, JSONError> typeRes = Jonson.Parse(input, 1024);
 if (typeRes.IsErr()) {
     JSONError error = typeRes.AsErr();
     // do something about this error
@@ -92,6 +93,5 @@ Dictionary<string, JSONType> root = new Dictionary<string, JSONType>();
 root["foo"] = JSONType.Make("bar");
 JSONType type = JSONType.Make(root);
 
-string json = VJP.Generate(type); // {"foo":"bar"}
+string json = Jonson.Generate(type); // {"foo":"bar"}
 ```
-I hope you understand why it is called verbose now.

@@ -1,7 +1,7 @@
 .PHONY: build test
 
 build:
-	mcs main.cs VJP.cs option/*cs -langversion:ISO-2 -out:vjp.exe
+	mcs main.cs Jonson.cs option/*cs -langversion:ISO-2 -out:jonson.exe
 
 test:
 	./test.sh

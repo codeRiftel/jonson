@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using vjp;
+using jonson;
 using option;
 
 class Init {
@@ -16,7 +16,7 @@ class Init {
 
         string input = inputBuilder.ToString();
 
-        Result<JSONType, JSONError> parseResp = VJP.Parse(input, 1024);
+        Result<JSONType, JSONError> parseResp = Jonson.Parse(input, 1024);
         if (parseResp.IsErr()) {
             JSONError err = parseResp.AsErr();
             int lineCount = 1;
@@ -32,7 +32,7 @@ class Init {
             return -1;
         } else {
             JSONType type = parseResp.AsOk();
-            Console.WriteLine(VJP.Generate(type));
+            Console.WriteLine(Jonson.Generate(type));
             return 0;
         }
     }
