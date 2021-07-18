@@ -1,5 +1,5 @@
-# jonson
-jonson is a JSON parser and generator which heavily relies on type system.  
+# Jonson
+Jonson is a JSON parser and generator which heavily relies on type system.  
 **NOTE:** this package depends on [Option](https://github.com/codeRiftel/option).  
 
 ## Less verbose option
@@ -7,7 +7,7 @@ If you're willing to sacrifice some speed you can check out [vjp-reflect](https:
 Don't want to sacrifice speed? Check out [meta-vjp](https://github.com/codeRiftel/meta-vjp) which generates C# code for your lazy ass.
 
 ## Why?
-jonson allows sort of dynamic parsing, when JsonUtility (from Unity) does not. Also it's written in pure C# 2.0, so it's very compatible and won't throw errors in AOT builds (compared to JSON.NET for example) while still remaining very simple and small.
+Jonson allows sort of dynamic parsing, when JsonUtility (from Unity) does not. Also it's written in pure C# 2.0, so it's very compatible and won't throw errors in AOT builds (compared to JSON.NET for example) while still remaining very simple and small.
 
 ## Features
 * verbose
