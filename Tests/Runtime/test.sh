@@ -1,8 +1,8 @@
 #!/bin/sh
 
-for test in $(ls -rc tests); do
+for test in $(ls -rc ./Tests/Runtime/tests); do
     echo "================================"
-    test_data=$(cat tests/$test)
+    test_data=$(cat ./Tests/Runtime/tests/$test)
     result=${test:0:1}
     count=$(echo $test_data | wc -m)
     echo -n "$test: "
@@ -11,7 +11,7 @@ for test in $(ls -rc tests); do
     else
         echo "too long"
     fi
-    mono jonson.exe < tests/$test
+    mono jonson.exe < ./Tests/Runtime/tests/$test
     if [ $? -ne 0 ]; then
         if [ $result == 'n' ] || [ $result == 'i' ]; then
             echo "PASSED"

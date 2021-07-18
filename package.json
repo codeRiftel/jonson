@@ -1,0 +1,12 @@
+{
+    "name": "xyz.coderiftel.jonson",
+    "version": "1.0.0",
+    "description": "Verbose JSON parser and generator.",
+    "displayName": "jonson",
+    "author": {"name": "coderiftel"},
+    "hideInEditor": false,
+    "keywords": ["lightweight", "simple", "json", "parser", "generator", "coderiftel", "jonson"],
+    "dependencies": {
+        "xyz.coderiftel.option": "1.0.0"
+    }
+}
