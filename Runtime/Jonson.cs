@@ -820,10 +820,22 @@ namespace jonson {
         private static void Escape(string data, StringBuilder builder) {
             for (int i = 0; i < data.Length; i++) {
                 char c = data[i];
-                if (c == '"' || c == '\\' || (c >= 0 && c <= 0x1f)) {
+                if (c == '\b') {
+                    builder.Append("\\b");
+                } else if (c == '\f') {
+                    builder.Append("\\f");
+                } else if (c == '\n') {
+                    builder.Append("\\n");
+                } else if (c == '\r') {
+                    builder.Append("\\r");
+                } else if (c == '\t') {
+                    builder.Append("\\t");
+                } else if (c == '"' || c == '\\' || c == '/' || (c >= 0 && c <= 0x1f)) {
                     builder.Append('\\');
+                    builder.Append(c);
+                } else {
+                    builder.Append(c);
                 }
-                builder.Append(c);
             }
         }
 
