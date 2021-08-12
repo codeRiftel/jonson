@@ -201,7 +201,7 @@ namespace jonson {
                 int i = 0;
                 foreach (KeyValuePair<string, JSONType> pair in obj) {
                     builder.Append('"');
-                    builder.Append(pair.Key);
+                    Escape(pair.Key, builder);
                     builder.Append('"');
                     builder.Append(':');
 

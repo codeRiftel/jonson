@@ -1,6 +1,6 @@
 {
     "name": "xyz.coderiftel.jonson",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Verbose JSON parser and generator.",
     "displayName": "jonson",
     "author": {"name": "coderiftel"},
